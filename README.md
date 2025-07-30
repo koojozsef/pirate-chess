@@ -26,6 +26,13 @@ There are only two types of pieces, each with simple movement patterns that chan
 - **⚔️ Warrior**: Can move 1-3 hexes forward in the direction it's facing
 - **🔍 Scout**: Can move 1 hex forward, left, or right relative to its facing direction
 
+## Game Setup
+
+- **4 Warriors per player**: Positioned in the back row for powerful forward attacks
+- **3 Scouts per player**: Positioned in the front row for flexible maneuvering
+- **Total: 7 pieces per player**
+- **Win Condition**: Capture all opponent pieces to win
+
 ## Controls
 
 - **Click**: Select pieces and move to valid hexagons

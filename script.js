@@ -31,44 +31,32 @@ class HexChess {
     }
     
     setupInitialPieces() {
-        // Player 1 pieces (bottom)
+        // Player 1 pieces (bottom) - 7 pieces total
         const player1Positions = [
-            // Warriors (can move 1-3 hexes forward)
-            {q: -3, r: 3, type: 'warrior', rotation: 0},
+            // Warriors (can move 1-3 hexes forward) - 4 pieces
             {q: -2, r: 3, type: 'warrior', rotation: 0},
             {q: -1, r: 3, type: 'warrior', rotation: 0},
             {q: 0, r: 3, type: 'warrior', rotation: 0},
             {q: 1, r: 2, type: 'warrior', rotation: 0},
-            {q: 2, r: 1, type: 'warrior', rotation: 0},
-            {q: 3, r: 0, type: 'warrior', rotation: 0},
-            {q: 3, r: -3, type: 'warrior', rotation: 0},
             
-            // Scouts (can move 1 hex forward, left, or right)
-            {q: -2, r: 2, type: 'scout', rotation: 0},
+            // Scouts (can move 1 hex forward, left, or right) - 3 pieces
             {q: -1, r: 2, type: 'scout', rotation: 0},
             {q: 0, r: 2, type: 'scout', rotation: 0},
-            {q: 1, r: 1, type: 'scout', rotation: 0},
-            {q: 2, r: 0, type: 'scout', rotation: 0}
+            {q: 1, r: 1, type: 'scout', rotation: 0}
         ];
         
-        // Player 2 pieces (top)
+        // Player 2 pieces (top) - 7 pieces total
         const player2Positions = [
-            // Warriors (can move 1-3 hexes forward)
-            {q: 3, r: -3, type: 'warrior', rotation: 3},
+            // Warriors (can move 1-3 hexes forward) - 4 pieces
             {q: 2, r: -3, type: 'warrior', rotation: 3},
             {q: 1, r: -3, type: 'warrior', rotation: 3},
             {q: 0, r: -3, type: 'warrior', rotation: 3},
             {q: -1, r: -2, type: 'warrior', rotation: 3},
-            {q: -2, r: -1, type: 'warrior', rotation: 3},
-            {q: -3, r: 0, type: 'warrior', rotation: 3},
-            {q: -3, r: 3, type: 'warrior', rotation: 3},
             
-            // Scouts (can move 1 hex forward, left, or right)
-            {q: 2, r: -2, type: 'scout', rotation: 3},
+            // Scouts (can move 1 hex forward, left, or right) - 3 pieces
             {q: 1, r: -2, type: 'scout', rotation: 3},
             {q: 0, r: -2, type: 'scout', rotation: 3},
-            {q: -1, r: -1, type: 'scout', rotation: 3},
-            {q: -2, r: 0, type: 'scout', rotation: 3}
+            {q: -1, r: -1, type: 'scout', rotation: 3}
         ];
         
         // Place pieces
@@ -132,15 +120,17 @@ class HexChess {
     }
     
     hexToPixel(q, r, centerX, centerY) {
-        const x = centerX + this.hexSize * (3/2 * q);
-        const y = centerY + this.hexSize * (Math.sqrt(3)/2 * q + Math.sqrt(3) * r);
+        // Flat-top hexagon layout (rotated 30 degrees from pointy-top)
+        const x = centerX + this.hexSize * (Math.sqrt(3) * q + Math.sqrt(3)/2 * r);
+        const y = centerY + this.hexSize * (3/2 * r);
         return { x, y };
     }
     
     getHexPoints(x, y) {
         const points = [];
         for (let i = 0; i < 6; i++) {
-            const angle = (Math.PI / 3) * i;
+            // Add 30 degrees (π/6) to rotate from pointy-top to flat-top
+            const angle = (Math.PI / 3) * i + (Math.PI / 6);
             const px = x + this.hexSize * Math.cos(angle);
             const py = y + this.hexSize * Math.sin(angle);
             points.push(`${px},${py}`);
