@@ -1,0 +1,31 @@
+{
+  "name": "pirate-chess",
+  "version": "1.0.0",
+  "description": "An interactive web-based chess-like board game played on a hexagonal grid with unique piece rotation mechanics",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "chess",
+    "hexagonal",
+    "board-game",
+    "pirate",
+    "web-game",
+    "javascript",
+    "svg",
+    "interactive"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koojozsef/pirate-chess.git"
+  },
+  "bugs": {
+    "url": "https://github.com/koojozsef/pirate-chess/issues"
+  },
+  "homepage": "https://github.com/koojozsef/pirate-chess#readme"
+}
