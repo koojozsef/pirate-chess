@@ -74,6 +74,23 @@ def rotate_piece(request, game_id):
         'success': True,
         'board': game.board,
         'phase': game.phase,
+        # Player stays same
+        'current_player': game.current_player,
+        'last_moved_piece': game.last_moved_piece
+    })
+
+@require_POST
+@csrf_exempt
+def end_turn(request, game_id):
+    game = get_object_or_404(Game, id=game_id)
+    success, error = logic.end_turn(game)
+    if not success:
+        return JsonResponse({'error': error}, status=400)
+        
+    return JsonResponse({
+        'success': True,
+        'board': game.board,
+        'phase': game.phase,
         'current_player': game.current_player,
         'last_moved_piece': game.last_moved_piece
     })

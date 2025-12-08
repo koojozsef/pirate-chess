@@ -184,6 +184,15 @@ def rotate_piece(game, q, r):
     # Update board piece
     set_piece(game.board, q, r, piece)
     
+    # Do NOT end turn here anymore
+    game.save()
+    
+    return True, None
+
+def end_turn(game):
+    if game.phase != 'rotate':
+         return False, "Can only end turn after moving (in rotate phase)"
+
     # End turn
     game.phase = 'move'
     game.current_player = 2 if game.current_player == 1 else 1

@@ -5,8 +5,8 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #2c3e50, #34495e);
+    font-family: 'Courier New', Courier, monospace; /* Monospace for a raw map feel */
+    background-color: #1a2530; /* Deep Ocean Blue */
     color: #ecf0f1;
     min-height: 100vh;
 }
@@ -24,9 +24,11 @@ header {
 
 header h1 {
     font-size: 3rem;
-    color: #f39c12;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    color: #ffc107; /* Gold */
+    text-shadow: 4px 4px 0 #000; /* Hard shadow */
     margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .game-info {
@@ -35,25 +37,39 @@ header h1 {
     align-items: center;
     max-width: 600px;
     margin: 0 auto;
+    background: #8d6e63; /* Wood */
+    padding: 15px;
+    border: 4px solid #5d4037;
+    box-shadow: 6px 6px 0 #3e2723;
 }
 
 .player-turn {
     font-size: 1.5rem;
     font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
 }
 
 .game-controls {
     display: flex;
-    gap: 10px;
+    gap: 15px;
 }
 
 button {
     padding: 10px 20px;
     font-size: 1rem;
-    border: none;
-    border-radius: 5px;
+    border: 3px solid #000;
+    border-radius: 0; /* No radius for low-poly feel */
     cursor: pointer;
-    transition: all 0.3s ease;
+    font-family: inherit;
+    font-weight: bold;
+    box-shadow: 4px 4px 0 #000;
+    transition: transform 0.1s ease;
+}
+
+button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #000;
 }
 
 #new-game-btn {
@@ -63,7 +79,6 @@ button {
 
 #new-game-btn:hover {
     background: #2ecc71;
-    transform: translateY(-2px);
 }
 
 #rotate-btn {
@@ -73,96 +88,93 @@ button {
 
 #rotate-btn:hover:not(:disabled) {
     background: #5dade2;
-    transform: translateY(-2px);
 }
 
 #rotate-btn:disabled {
     background: #7f8c8d;
     cursor: not-allowed;
+    box-shadow: none;
+    transform: translate(2px, 2px);
 }
 
 main {
     display: flex;
     gap: 30px;
     justify-content: center;
+    margin-top: 30px;
 }
 
 .board-container {
     flex: 1;
     max-width: 800px;
-    background: rgba(255,255,255,0.1);
+    background: #d7ccc8; /* Parchment/Sand */
     padding: 20px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
+    border: 8px solid #8d6e63; /* Wood frame */
+    box-shadow: 8px 8px 0 #3e2723;
 }
 
 #game-board {
     width: 100%;
     height: auto;
-    border-radius: 10px;
 }
 
 .hex {
-    stroke: #34495e;
-    stroke-width: 2;
+    stroke: #8d6e63;
+    stroke-width: 3;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: fill 0.2s ease;
 }
 
 .hex.light {
-    fill: #ecf0f1;
+    fill: #f5f5f5; /* Clean paper */
 }
 
 .hex.dark {
-    fill: #bdc3c7;
+    fill: #bcaaa4; /* Aged paper */
 }
 
 .hex:hover {
-    stroke: #f39c12;
-    stroke-width: 3;
+    stroke: #ffc107;
+    stroke-width: 5;
+    fill: #fff9c4;
 }
 
 .hex.selected {
-    stroke: #e74c3c;
-    stroke-width: 4;
-    fill: #e67e22;
+    stroke: #ffc107; /* Gold */
+    stroke-width: 6;
+    fill: #ffe082;
 }
 
 .hex.valid-move {
     stroke: #27ae60;
-    stroke-width: 3;
-    fill: #2ecc71;
-    opacity: 0.7;
+    fill: #a5d6a7;
+    opacity: 1;
 }
 
 .piece {
     cursor: pointer;
-    transition: all 0.2s ease;
-    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
-    transform-origin: center;
+    transition: transform 0.2s ease;
 }
 
 .piece:hover {
-    filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.5));
-    stroke-width: 2;
+    transform: scale(1.1);
 }
 
 .piece.player1 {
-    fill: #2c3e50;
-    stroke: #ecf0f1;
-    stroke-width: 1;
+    fill: #2c3e50; /* Navy */
+    stroke: #000;
+    stroke-width: 2;
 }
 
 .piece.player2 {
-    fill: #c0392b;
-    stroke: #ecf0f1;
-    stroke-width: 1;
+    fill: #c0392b; /* Crimson */
+    stroke: #000;
+    stroke-width: 2;
 }
 
 .piece.selected {
-    stroke: #f39c12;
-    stroke-width: 3;
-    transform: scale(1.08);
+    stroke: #ffc107;
+    stroke-width: 4;
 }
 
 .game-sidebar {
@@ -173,46 +185,57 @@ main {
 }
 
 .captured-pieces, .game-rules {
-    background: rgba(255,255,255,0.1);
+    background: #8d6e63; /* Wood */
     padding: 20px;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
+    border: 4px solid #5d4037;
+    box-shadow: 6px 6px 0 #3e2723;
+    color: #fff;
 }
 
 .captured-pieces h3, .game-rules h3 {
-    color: #f39c12;
+    color: #ffc107;
     margin-bottom: 15px;
     font-size: 1.3rem;
+    text-shadow: 2px 2px 0 #000;
 }
 
 .player1-captured, .player2-captured {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .player1-captured h4, .player2-captured h4 {
     margin-bottom: 10px;
-    color: #3498db;
+    color: #fff;
+    background: #000;
+    display: inline-block;
+    padding: 2px 8px;
+    transform: skew(-10deg);
 }
 
 .captured-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 8px;
     min-height: 40px;
-    border: 1px dashed #7f8c8d;
+    background: rgba(0,0,0,0.2);
     padding: 10px;
-    border-radius: 5px;
+    border: 2px solid #5d4037;
 }
 
 .captured-piece {
-    width: 30px;
-    height: 30px;
-    border-radius: 3px;
+    width: 35px;
+    height: 35px;
+    background: #d7ccc8;
+    border: 2px solid #000;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
 }
+
+.captured-piece.player1 { color: #2c3e50; }
+.captured-piece.player2 { color: #c0392b; }
 
 .game-rules ul {
     list-style: none;
@@ -220,16 +243,17 @@ main {
 }
 
 .game-rules li {
-    margin-bottom: 10px;
-    padding-left: 20px;
+    margin-bottom: 15px;
+    padding-left: 30px;
     position: relative;
+    line-height: 1.4;
 }
 
 .game-rules li:before {
-    content: "⚓";
+    content: "☠️";
     position: absolute;
     left: 0;
-    color: #f39c12;
+    top: -2px;
 }
 
 @media (max-width: 1200px) {

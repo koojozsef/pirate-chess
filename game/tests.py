@@ -22,19 +22,12 @@ class HexChessLogicTests(TestCase):
         self.assertEqual(p2_count, 7)
         
     def test_valid_move(self):
-        # P1 Warrior at -2, 3
-        # Valid moves: -1,3 (forward 1)
-        # Note: forward for P1 (rot 0) is (+1, 0) in q,r? 
-        # Logic: directions[0] = {1, 0}.
-        # So -2+1 = -1, 3+0 = 3.
+        # P1 Scout at -1, 2
+        # Rot 0. Scout directions: Forward (1,0), Left (0,1), Right (1,-1).
+        # Move Right to (-1+1, 2-1) = (0, 1).
+        # (0, 1) is empty.
         
-        # Wait, let's check logic.py directions.
-        # directions = [{1,0}, {1,-1}, {0,-1}, {-1,0}, {-1,1}, {0,1}]
-        # Rot 0 (P1) -> forward is {1, 0}.
-        # Start: q=-2, r=3.
-        # Target: q=-1, r=3.
-        
-        is_valid, error = logic.validate_move(self.game, -2, 3, -1, 3)
+        is_valid, error = logic.validate_move(self.game, -1, 2, 0, 1)
         self.assertTrue(is_valid, f"Move should be valid: {error}")
         
     def test_invalid_move_wrong_player(self):
@@ -44,17 +37,38 @@ class HexChessLogicTests(TestCase):
         self.assertEqual(error, "Not your piece")
         
     def test_rotation(self):
-        # Move piece first
-        logic.execute_move(self.game, -2, 3, -1, 3)
+        # Move piece first (Scout -1,2 -> 0,1)
+        logic.execute_move(self.game, -1, 2, 0, 1)
         
-        # Try rotating
-        success, error = logic.rotate_piece(self.game, -1, 3)
+        # Try rotating (at new pos 0,1)
+        success, error = logic.rotate_piece(self.game, 0, 1)
         self.assertTrue(success)
         
         # Check rotation incremented
-        piece = logic.get_piece(self.game.board, -1, 3)
+        piece = logic.get_piece(self.game.board, 0, 1)
         self.assertEqual(piece['rotation'], 1)
         
+        # Check phase is STILL rotate and player is STILL 1
+        self.assertEqual(self.game.phase, 'rotate')
+        self.assertEqual(self.game.current_player, 1)
+
+        # Rotate again
+        success, error = logic.rotate_piece(self.game, 0, 1)
+        self.assertTrue(success)
+        piece = logic.get_piece(self.game.board, 0, 1)
+        self.assertEqual(piece['rotation'], 2)
+
+        # NOW End Turn
+        success, error = logic.end_turn(self.game)
+        self.assertTrue(success)
+
         # Check phase changed back to move and player switched
         self.assertEqual(self.game.phase, 'move')
         self.assertEqual(self.game.current_player, 2)
+
+    def test_end_turn_invalid(self):
+        # Attempt to end turn in move phase
+        success, error = logic.end_turn(self.game)
+        self.assertFalse(success)
+        self.assertEqual(error, "Can only end turn after moving (in rotate phase)")
+

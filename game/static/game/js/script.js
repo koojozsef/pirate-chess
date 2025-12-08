@@ -46,7 +46,8 @@ class HexChess {
 
         this.updatePieces();
         this.updatePlayerTurn();
-        this.updateRotateButton();
+        this.updatePlayerTurn();
+        this.updateButtons();
         this.updateCapturedList(data.captured); // Backend need to support returning full captured list or we track it
 
         if (data.winner) {
@@ -164,8 +165,10 @@ class HexChess {
     }
 
     createPieceShape(type, x, y, rotation) {
-        const size = this.hexSize * 0.6;
+        const size = this.hexSize * 0.7; // Slightly larger for chunky feel
         const shape = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+        // Base Rotation wrapper
         if (rotation > 0) {
             const angle = rotation * 60;
             shape.setAttribute('transform', `rotate(${angle} ${x} ${y})`);
@@ -173,43 +176,65 @@ class HexChess {
 
         switch (type) {
             case 'warrior':
-                const warrior = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-                warrior.setAttribute('points', `${x},${y - size * 0.5} ${x + size * 0.4},${y} ${x},${y + size * 0.5} ${x - size * 0.4},${y}`);
-                shape.appendChild(warrior);
-                // Arrow
-                const warriorArrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                warriorArrow.setAttribute('x1', x);
-                warriorArrow.setAttribute('y1', y);
-                warriorArrow.setAttribute('x2', x);
-                warriorArrow.setAttribute('y2', y - size * 0.3);
-                warriorArrow.setAttribute('stroke', 'currentColor');
-                warriorArrow.setAttribute('stroke-width', '3');
-                warriorArrow.setAttribute('stroke-linecap', 'round');
-                shape.appendChild(warriorArrow);
+                // Warrior: A solid, angular shield/hull shape
+                const warriorBody = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                // chunky triangle
+                warriorBody.setAttribute('points',
+                    `${x},${y - size * 0.6} ` + // Tip
+                    `${x + size * 0.5},${y + size * 0.5} ` + // Bottom Right
+                    `${x},${y + size * 0.3} ` + // Inner bottom
+                    `${x - size * 0.5},${y + size * 0.5}` // Bottom Left
+                );
+                // Inherits fill/stroke from .piece class but we can override if needed for detail
+                shape.appendChild(warriorBody);
+
+                // Directional Arrow (Triangle on top)
+                const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                arrow.setAttribute('points',
+                    `${x},${y - size * 0.9} ` + // Far Tip
+                    `${x + size * 0.2},${y - size * 0.5} ` +
+                    `${x - size * 0.2},${y - size * 0.5}`
+                );
+                arrow.setAttribute('fill', '#ffc107'); // Gold arrow
+                shape.appendChild(arrow);
                 break;
+
             case 'scout':
-                const scout = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                scout.setAttribute('cx', x);
-                scout.setAttribute('cy', y);
-                scout.setAttribute('r', size * 0.35);
-                shape.appendChild(scout);
-                // Directions
-                const directions = [
-                    { x1: x, y1: y, x2: x, y2: y - size * 0.25 },
-                    { x1: x, y1: y, x2: x - size * 0.22, y2: y + size * 0.13 },
-                    { x1: x, y1: y, x2: x + size * 0.22, y2: y + size * 0.13 }
-                ];
-                directions.forEach(dir => {
-                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                    line.setAttribute('x1', dir.x1);
-                    line.setAttribute('y1', dir.y1);
-                    line.setAttribute('x2', dir.x2);
-                    line.setAttribute('y2', dir.y2);
-                    line.setAttribute('stroke', 'currentColor');
-                    line.setAttribute('stroke-width', '2');
-                    line.setAttribute('stroke-linecap', 'round');
-                    shape.appendChild(line);
-                });
+                // Scout: Diamond shape, low poly
+                const scoutBody = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                scoutBody.setAttribute('points',
+                    `${x},${y - size * 0.5} ` +
+                    `${x + size * 0.4},${y} ` +
+                    `${x},${y + size * 0.5} ` +
+                    `${x - size * 0.4},${y}`
+                );
+                shape.appendChild(scoutBody);
+
+                // Directions: Thicker angular lines
+                const directions = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                directions.setAttribute('stroke', '#ffc107'); // Gold
+                directions.setAttribute('stroke-width', '4');
+                directions.setAttribute('stroke-linecap', 'butt'); // Hard ends
+
+                // Forward
+                const fwd = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                fwd.setAttribute('x1', x); fwd.setAttribute('y1', y);
+                fwd.setAttribute('x2', x); fwd.setAttribute('y2', y - size * 0.8);
+                directions.appendChild(fwd);
+
+                // Back Left
+                const bl = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                bl.setAttribute('x1', x); bl.setAttribute('y1', y);
+                bl.setAttribute('x2', x - size * 0.4); bl.setAttribute('y2', y + size * 0.3);
+                directions.appendChild(bl);
+
+                // Back Right
+                const br = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                br.setAttribute('x1', x); br.setAttribute('y1', y);
+                br.setAttribute('x2', x + size * 0.4); br.setAttribute('y2', y + size * 0.3);
+                directions.appendChild(br);
+
+                shape.appendChild(directions);
                 break;
         }
         return shape;
@@ -328,18 +353,41 @@ class HexChess {
         }
     }
 
+    async endTurn() {
+        if (!this.gameId) return;
+        try {
+            const response = await fetch(`/api/game/${this.gameId}/end_turn/`, {
+                method: 'POST'
+            });
+            const data = await response.json();
+            if (response.ok) {
+                this.updateState(data);
+            } else {
+                console.error('Error ending turn:', data.error);
+            }
+        } catch (error) {
+            console.error('Error in request:', error);
+        }
+    }
+
     updatePlayerTurn() {
         document.getElementById('current-player').textContent = `Player ${this.currentPlayer}`;
     }
 
-    updateRotateButton() {
+    updateButtons() {
+        // Rotate button only enabled in rotate phase and if it's our turn (implied by phase check usually)
         const rotateBtn = document.getElementById('rotate-btn');
         rotateBtn.disabled = this.gamePhase !== 'rotate';
+
+        // End Turn button enabled in rotate phase
+        const endTurnBtn = document.getElementById('end-turn-btn');
+        endTurnBtn.disabled = this.gamePhase !== 'rotate';
     }
 
     setupEventListeners() {
         document.getElementById('new-game-btn').addEventListener('click', () => this.startNewGame());
         document.getElementById('rotate-btn').addEventListener('click', () => this.rotatePiece());
+        document.getElementById('end-turn-btn').addEventListener('click', () => this.endTurn());
     }
 }
 
