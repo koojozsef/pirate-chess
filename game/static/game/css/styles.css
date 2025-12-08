@@ -5,8 +5,10 @@
 }
 
 body {
-    font-family: 'Courier New', Courier, monospace; /* Monospace for a raw map feel */
-    background-color: #1a2530; /* Deep Ocean Blue */
+    font-family: 'Courier New', Courier, monospace;
+    /* Monospace for a raw map feel */
+    background-color: #1a2530;
+    /* Deep Ocean Blue */
     color: #ecf0f1;
     min-height: 100vh;
 }
@@ -24,8 +26,10 @@ header {
 
 header h1 {
     font-size: 3rem;
-    color: #ffc107; /* Gold */
-    text-shadow: 4px 4px 0 #000; /* Hard shadow */
+    color: #ffc107;
+    /* Gold */
+    text-shadow: 4px 4px 0 #000;
+    /* Hard shadow */
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -37,7 +41,8 @@ header h1 {
     align-items: center;
     max-width: 600px;
     margin: 0 auto;
-    background: #8d6e63; /* Wood */
+    background: #8d6e63;
+    /* Wood */
     padding: 15px;
     border: 4px solid #5d4037;
     box-shadow: 6px 6px 0 #3e2723;
@@ -59,7 +64,8 @@ button {
     padding: 10px 20px;
     font-size: 1rem;
     border: 3px solid #000;
-    border-radius: 0; /* No radius for low-poly feel */
+    border-radius: 0;
+    /* No radius for low-poly feel */
     cursor: pointer;
     font-family: inherit;
     font-weight: bold;
@@ -107,9 +113,11 @@ main {
 .board-container {
     flex: 1;
     max-width: 800px;
-    background: #d7ccc8; /* Parchment/Sand */
+    background: #d7ccc8;
+    /* Parchment/Sand */
     padding: 20px;
-    border: 8px solid #8d6e63; /* Wood frame */
+    border: 8px solid #8d6e63;
+    /* Wood frame */
     box-shadow: 8px 8px 0 #3e2723;
 }
 
@@ -126,11 +134,13 @@ main {
 }
 
 .hex.light {
-    fill: #f5f5f5; /* Clean paper */
+    fill: #f5f5f5;
+    /* Clean paper */
 }
 
 .hex.dark {
-    fill: #bcaaa4; /* Aged paper */
+    fill: #bcaaa4;
+    /* Aged paper */
 }
 
 .hex:hover {
@@ -140,7 +150,8 @@ main {
 }
 
 .hex.selected {
-    stroke: #ffc107; /* Gold */
+    stroke: #ffc107;
+    /* Gold */
     stroke-width: 6;
     fill: #ffe082;
 }
@@ -154,6 +165,8 @@ main {
 .piece {
     cursor: pointer;
     transition: transform 0.2s ease;
+    transform-box: fill-box;
+    transform-origin: center;
 }
 
 .piece:hover {
@@ -161,13 +174,15 @@ main {
 }
 
 .piece.player1 {
-    fill: #2c3e50; /* Navy */
+    fill: #2c3e50;
+    /* Navy */
     stroke: #000;
     stroke-width: 2;
 }
 
 .piece.player2 {
-    fill: #c0392b; /* Crimson */
+    fill: #c0392b;
+    /* Crimson */
     stroke: #000;
     stroke-width: 2;
 }
@@ -184,26 +199,31 @@ main {
     gap: 20px;
 }
 
-.captured-pieces, .game-rules {
-    background: #8d6e63; /* Wood */
+.captured-pieces,
+.game-rules {
+    background: #8d6e63;
+    /* Wood */
     padding: 20px;
     border: 4px solid #5d4037;
     box-shadow: 6px 6px 0 #3e2723;
     color: #fff;
 }
 
-.captured-pieces h3, .game-rules h3 {
+.captured-pieces h3,
+.game-rules h3 {
     color: #ffc107;
     margin-bottom: 15px;
     font-size: 1.3rem;
     text-shadow: 2px 2px 0 #000;
 }
 
-.player1-captured, .player2-captured {
+.player1-captured,
+.player2-captured {
     margin-bottom: 20px;
 }
 
-.player1-captured h4, .player2-captured h4 {
+.player1-captured h4,
+.player2-captured h4 {
     margin-bottom: 10px;
     color: #fff;
     background: #000;
@@ -217,7 +237,7 @@ main {
     flex-wrap: wrap;
     gap: 8px;
     min-height: 40px;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     padding: 10px;
     border: 2px solid #5d4037;
 }
@@ -231,11 +251,16 @@ main {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
-.captured-piece.player1 { color: #2c3e50; }
-.captured-piece.player2 { color: #c0392b; }
+.captured-piece.player1 {
+    color: #2c3e50;
+}
+
+.captured-piece.player2 {
+    color: #c0392b;
+}
 
 .game-rules ul {
     list-style: none;
@@ -261,14 +286,15 @@ main {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .game-sidebar {
         width: 100%;
         max-width: 800px;
         flex-direction: row;
     }
-    
-    .captured-pieces, .game-rules {
+
+    .captured-pieces,
+    .game-rules {
         flex: 1;
     }
 }
@@ -277,12 +303,12 @@ main {
     header h1 {
         font-size: 2rem;
     }
-    
+
     .game-info {
         flex-direction: column;
         gap: 15px;
     }
-    
+
     .game-sidebar {
         flex-direction: column;
     }
