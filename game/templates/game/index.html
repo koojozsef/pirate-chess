@@ -1,11 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pirate Chess - Hexagonal Board Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{% static 'game/css/styles.css' %}">
 </head>
+
 <body>
     <div class="game-container">
         <header>
@@ -20,14 +23,14 @@
                 </div>
             </div>
         </header>
-        
+
         <main>
             <div class="board-container">
                 <svg id="game-board" viewBox="0 0 800 700">
                     <!-- Hexagonal board will be generated here -->
                 </svg>
             </div>
-            
+
             <div class="game-sidebar">
                 <div class="captured-pieces">
                     <h3>Captured Pieces</h3>
@@ -40,7 +43,7 @@
                         <div id="player2-captured" class="captured-list"></div>
                     </div>
                 </div>
-                
+
                 <div class="game-rules">
                     <h3>How to Play</h3>
                     <ul>
@@ -55,7 +58,8 @@
             </div>
         </main>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script src="{% static 'game/js/script.js' %}"></script>
 </body>
+
 </html>

@@ -1,0 +1,29 @@
+# generic python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# virtual environment
+venv/
+env/
+.venv/
+.env
+
+# ide
+.vscode/
+.idea/
+
+# mac
+.DS_Store
+
+# node
+node_modules/
+npm-debug.log
