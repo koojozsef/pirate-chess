@@ -161,6 +161,12 @@ class HexChess {
             e.stopPropagation();
             this.handlePieceClick(q, r, pieceData);
         });
+        pieceGroup.addEventListener('mouseenter', () => {
+            this.handlePieceHover(q, r, pieceData);
+        });
+        pieceGroup.addEventListener('mouseleave', () => {
+            this.clearValidMoveHighlights();
+        });
         return pieceGroup;
     }
 
@@ -168,11 +174,9 @@ class HexChess {
         const size = this.hexSize * 0.7; // Slightly larger for chunky feel
         const shape = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
-        // Base Rotation wrapper
-        if (rotation > 0) {
-            const angle = rotation * 60;
-            shape.setAttribute('transform', `rotate(${angle} ${x} ${y})`);
-        }
+        // 90° base offset aligns piece tip with flat-side normals (not hex vertices)
+        const angle = rotation * 60 + 90;
+        shape.setAttribute('transform', `rotate(${angle} ${x} ${y})`);
 
         switch (type) {
             case 'warrior':
@@ -324,10 +328,28 @@ class HexChess {
     }
 
     clearHighlights() {
-        const hexes = document.querySelectorAll('.hex');
-        hexes.forEach(hex => hex.classList.remove('selected'));
-        const pieces = document.querySelectorAll('.piece');
-        pieces.forEach(piece => piece.classList.remove('selected'));
+        document.querySelectorAll('.hex').forEach(hex => hex.classList.remove('selected'));
+        document.querySelectorAll('.piece').forEach(piece => piece.classList.remove('selected'));
+        this.clearValidMoveHighlights();
+    }
+
+    clearValidMoveHighlights() {
+        document.querySelectorAll('.hex.valid-move').forEach(hex => hex.classList.remove('valid-move'));
+    }
+
+    async handlePieceHover(q, r, pieceData) {
+        if (this.gamePhase === 'rotate') return;
+        if (!this.gameId) return;
+        try {
+            const response = await fetch(`/api/game/${this.gameId}/valid_moves/?q=${q}&r=${r}`);
+            const data = await response.json();
+            data.moves.forEach(move => {
+                const hexEl = document.querySelector(`.hex[data-q="${move.q}"][data-r="${move.r}"]`);
+                if (hexEl) hexEl.classList.add('valid-move');
+            });
+        } catch (error) {
+            console.error('Error fetching valid moves:', error);
+        }
     }
 
     getPieceSymbol(type) {

@@ -27,6 +27,21 @@ def get_game_state(request, game_id):
         'winner': game.winner
     })
 
+def get_valid_moves(request, game_id):
+    game = get_object_or_404(Game, id=game_id)
+    try:
+        q = int(request.GET.get('q', 0))
+        r = int(request.GET.get('r', 0))
+    except (TypeError, ValueError):
+        return JsonResponse({'error': 'Invalid coordinates'}, status=400)
+
+    piece = logic.get_piece(game.board, q, r)
+    if not piece:
+        return JsonResponse({'moves': []})
+
+    moves = logic.get_valid_moves(game.board, q, r, piece)
+    return JsonResponse({'moves': moves})
+
 @require_POST
 @csrf_exempt
 def move_piece(request, game_id):

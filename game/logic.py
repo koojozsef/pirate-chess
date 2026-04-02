@@ -19,26 +19,26 @@ def initialize_board():
     return board
 
 def setup_initial_pieces(board):
-     # Player 1 (bottom)
+    # Player 1 (bottom) - rotation=4 faces upper-left toward Player 2
     p1_pieces = [
-        {'q': -2, 'r': 3, 'type': 'warrior', 'rotation': 0},
-        {'q': -1, 'r': 3, 'type': 'warrior', 'rotation': 0},
-        {'q': 0, 'r': 3, 'type': 'warrior', 'rotation': 0},
-        {'q': 1, 'r': 2, 'type': 'warrior', 'rotation': 0},
-        {'q': -1, 'r': 2, 'type': 'scout', 'rotation': 0},
-        {'q': 0, 'r': 2, 'type': 'scout', 'rotation': 0},
-        {'q': 1, 'r': 1, 'type': 'scout', 'rotation': 0}
+        {'q': -3, 'r': 3, 'type': 'warrior', 'rotation': 4},
+        {'q': -2, 'r': 3, 'type': 'warrior', 'rotation': 4},
+        {'q': -1, 'r': 3, 'type': 'warrior', 'rotation': 4},
+        {'q': 0, 'r': 3, 'type': 'warrior', 'rotation': 4},
+        {'q': -1, 'r': 2, 'type': 'scout', 'rotation': 4},
+        {'q': 0, 'r': 2, 'type': 'scout', 'rotation': 4},
+        {'q': 1, 'r': 2, 'type': 'scout', 'rotation': 4},
     ]
 
-    # Player 2 (top)
+    # Player 2 (top) - rotation=1 faces lower-right toward Player 1
     p2_pieces = [
-        {'q': 2, 'r': -3, 'type': 'warrior', 'rotation': 3},
-        {'q': 1, 'r': -3, 'type': 'warrior', 'rotation': 3},
-        {'q': 0, 'r': -3, 'type': 'warrior', 'rotation': 3},
-        {'q': -1, 'r': -2, 'type': 'warrior', 'rotation': 3},
-        {'q': 1, 'r': -2, 'type': 'scout', 'rotation': 3},
-        {'q': 0, 'r': -2, 'type': 'scout', 'rotation': 3},
-        {'q': -1, 'r': -1, 'type': 'scout', 'rotation': 3}
+        {'q': 0, 'r': -3, 'type': 'warrior', 'rotation': 1},
+        {'q': 1, 'r': -3, 'type': 'warrior', 'rotation': 1},
+        {'q': 2, 'r': -3, 'type': 'warrior', 'rotation': 1},
+        {'q': 3, 'r': -3, 'type': 'warrior', 'rotation': 1},
+        {'q': -1, 'r': -2, 'type': 'scout', 'rotation': 1},
+        {'q': 0, 'r': -2, 'type': 'scout', 'rotation': 1},
+        {'q': 1, 'r': -2, 'type': 'scout', 'rotation': 1},
     ]
 
     for p in p1_pieces:
